@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.PicassoTools;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,44 +47,57 @@ public class MainActivity extends AppCompatActivity {
                 new ImageLoaderConfiguration.Builder(MainActivity.this)
                         .writeDebugLogs().build());
 
-        Picasso p = Picasso.with(MainActivity.this);
-        p.setLoggingEnabled(true);
-        p.setIndicatorsEnabled(true);
+        Picasso.with(this);
 
         onClickReset();
 
     }
 
-    @OnClick(R.id.reset)
     public void onClickReset() {
 
-        snack("Reset and clear caches");
-
         // Clear caches, to force network
-        PicassoTools.clearCache(Picasso.with(MainActivity.this));
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
 
         // Reset images
-        mImageOne.setImageResource(android.support.design.R.drawable.abc_ic_menu_selectall_mtrl_alpha);
-        mImageTwo.setImageResource(android.support.design.R.drawable.abc_ic_menu_selectall_mtrl_alpha);
-        mImageThree.setImageResource(android.support.design.R.drawable.abc_ic_menu_selectall_mtrl_alpha);
+        int resId = android.support.design.R.drawable.abc_ic_menu_selectall_mtrl_alpha;
+        mImageOne.setImageResource(resId);
+        mImageTwo.setImageResource(resId);
+        mImageThree.setImageResource(resId);
     }
 
     @OnClick(R.id.auil)
     public void onClickAuil() {
+        onClickReset();
         snack("Using: Universal Image Loader");
-        ImageLoader.getInstance().displayImage(mUrls[0], mImageOne);
-        ImageLoader.getInstance().displayImage(mUrls[1], mImageTwo);
-        ImageLoader.getInstance().displayImage(mUrls[2], mImageThree);
+        ImageLoader i = ImageLoader.getInstance();
+        DisplayImageOptions.Builder b = new DisplayImageOptions.Builder();
+        b.cacheInMemory(false);
+        b.cacheOnDisk(false);
+        i.displayImage(mUrls[0], mImageOne, b.build());
+        i.displayImage(mUrls[1], mImageTwo, b.build());
+        i.displayImage(mUrls[2], mImageThree, b.build());
     }
 
     @OnClick(R.id.picasso)
     public void onClickPicasso() {
+        onClickReset();
         snack("Using: Picasso");
-        Picasso.with(MainActivity.this).load(mUrls[0]).into(mImageOne);
-        Picasso.with(MainActivity.this).load(mUrls[1]).into(mImageTwo);
-        Picasso.with(MainActivity.this).load(mUrls[2]).into(mImageThree);
+        Picasso p = Picasso.with(this);
+        p.load(mUrls[0])
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                .into(mImageOne);
+
+        p.load(mUrls[1])
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                .into(mImageTwo);
+
+        p.load(mUrls[2])
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                .into(mImageThree);
     }
 
     private void snack(String text) {
