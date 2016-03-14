@@ -44,23 +44,54 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:text="Change active urls"
+                android:background="#eeeeee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/urlsActive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <Button
-                android:id="@+id/picasso"
-                android:text="Picasso"
+                android:id="@+id/urlsChange"
+                android:text="Change urls"
                 android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+            <TextView
+                android:text="Choose loader method"
+                android:background="#eeeeee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/picassoUrlConnection"
+                android:text="Picasso UrlConnection"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+            <Button
+                android:id="@+id/picassoOkHttp"
+                android:text="Picasso OkHttp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
 
             <Button
                 android:id="@+id/auil"
                 android:text="AUIL"
                 android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
 
         </LinearLayout>
 
